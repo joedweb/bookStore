@@ -7,5 +7,5 @@ public interface BookDao {
     void deleteBook(int bookId);
     Book getBookByID(int bookId);       //read one book
 
-    List<Book> getALlBooks();           // read all books
+    List<Book> getAllBooks();           // read all books
 }
