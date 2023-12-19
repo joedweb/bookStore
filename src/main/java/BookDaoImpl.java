@@ -32,11 +32,33 @@ public class BookDaoImpl implements BookDao{
     @Override
     public void updateBook(Book book) {
 
+        try(PreparedStatement statement = connection.prepareStatement("UPDATE books SET title = ?, author = ?, genre =?, price=? WHERE book id=?" )){
+            statement.setString(1, book.getTitle());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getGenre());
+            statement.setDouble(4, book.getPrice());
+            statement.setInt(5, book.getBookId());
+
+            statement.executeUpdate();
+
+
+
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+
     }
 
     @Override
     public void deleteBook(int bookId) {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM books WHERE bookId=?")) {
+            statement.setInt(1,bookId);
 
+            statement.executeUpdate();
+
+        }catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -82,6 +104,7 @@ public class BookDaoImpl implements BookDao{
                     double price = rs.getDouble("price");
 
                     Book book = new Book(id, title, author, genre, price);
+                    books.add(book);
                 }
             }
         }catch (SQLException e){

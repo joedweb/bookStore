@@ -45,6 +45,7 @@ public class BookStoreApp {
 
                 case 5:
                     displayBooks(sc);
+                    break;
 
                 case 6:
                     System.out.println("See you later...");
@@ -61,7 +62,6 @@ public class BookStoreApp {
     private static void displayBooks(Scanner sc) {
         for (Book book : bookDao.getAllBooks()) {
             System.out.println(book);
-
         }
     }
 
@@ -79,10 +79,59 @@ public class BookStoreApp {
     }
 
     private static void deleteBook(Scanner sc) {
+
+        System.out.println(" Enter the id to delete: ");
+        int bookId = sc.nextInt();
+        sc.nextLine();
+
+        //check if the book is there, if yes then proceed to update
+        Book book = bookDao.getBookByID(bookId);
+
+        if(book == null) {
+            System.out.println("Book not found");
+        }
+        else{
+            bookDao.deleteBook(bookId);
+            System.out.println("Book deleted succesffully");
+            // use the delete
+        }
     }
 
     private static void updateBook(Scanner sc) {
-    }
+        System.out.println(" Enter the id to update: ");
+        int bookId = sc.nextInt();
+        sc.nextLine();
+
+        //check if the book is there, if yes then proceed to update
+        Book book = bookDao.getBookByID(bookId);
+        if(book == null) {
+            System.out.println("Book not found");
+        }
+        else{
+            System.out.println("Enter your new book information (enter to skip item)");
+            System.out.println("Title: ");
+            String title = sc.nextLine();
+            System.out.println("Author: ");
+            String author = sc.nextLine();
+            System.out.println("Genre: ");
+            String genre = sc.nextLine();
+            System.out.println("Price: ");
+            Double price = sc.nextDouble();
+            sc.nextLine(); //consume line
+
+            book.setTitle(title.isEmpty()? book.getTitle() : title);        // !!! asks if empty(pressed enter). If yes it will keep the same title, if not empty (entered a title) it will update the tile
+
+                            // ^ same as
+                    // Boolean emptyAuthor = author.isEmpty;
+                    // if(emptyAuthor){
+                    //book,setAuthor(book.getAuthor());
+                    //} book.setAuthor(author);
+
+            book.setAuthor(author.isEmpty()? book.getAuthor() : author);
+            book.setGenre(genre.isEmpty()? book.getGenre() : genre);
+            book.setPrice(price == 0 ? book.getPrice() : price);
+        }
+        }
 
     private static void addBook (Scanner sc) {
             System.out.println("Please enter Book Title: ");
